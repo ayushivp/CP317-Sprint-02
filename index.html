@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Espresso Edit — thoughtfully selected espresso equipment.">
+  <title>The Espresso Edit</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="wordmark">THE ESPRESSO EDIT.</a>
+
+    <nav class="main-nav">
+      <a href="#collection">SHOP</a>
+      <a href="#about">ABOUT</a>
+    </nav>
+
+    <a href="cart/cart.html" class="cart-link">
+      CART (<span id="header-cart-count">0</span>)
+    </a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">YOUR DAILY COFFEE RITUAL</p>
+        <h1>The art of a better coffee.</h1>
+        <p>
+          Thoughtfully selected equipment for people
+          who appreciate every cup.
+        </p>
+        <a href="#collection" class="hero-button">
+          EXPLORE THE COLLECTION
+        </a>
+      </div>
+    </section>
+
+    <section class="collection" id="collection">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">THE ESPRESSO EDIT SELECTION</p>
+          <h2>Objects for your coffee ritual.</h2>
+        </div>
+        <p id="product-count">02 OBJECTS</p>
+      </div>
+
+      <div class="catalogue-tools">
+        <div class="filter-buttons">
+          <button class="filter-button active" data-category="all">ALL</button>
+          <button class="filter-button" data-category="machines">MACHINES</button>
+          <button class="filter-button" data-category="grinders">GRINDERS</button>
+          <button class="filter-button" data-category="accessories">ACCESSORIES</button>
+        </div>
+
+        <input
+          type="search"
+          id="product-search"
+          placeholder="Search the collection..."
+          aria-label="Search products"
+        >
+      </div>
+
+      <div class="product-grid" id="product-grid"></div>
+
+      <p id="no-results" hidden>No products found.</p>
+    </section>
+
+    <section class="about" id="about">
+      <p class="eyebrow">A LITTLE ABOUT US</p>
+      <h2>Good coffee starts with the right details.</h2>
+      <p>
+        The Espresso Edit is a student-built e-commerce prototype
+        exploring the world of espresso machines and coffee equipment.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a href="index.html" class="wordmark">THE ESPRESSO EDIT.</a>
+    <p>© 2026 The Espresso Edit. Student project prototype.</p>
+  </footer>
+
+  <script src="cart/cart.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

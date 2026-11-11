@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Bag | The Espresso Edit</title>
+  <link rel="stylesheet" href="cart.css">
+</head>
+
+<body>
+
+  <header class="cart-header">
+    <a href="../index.html" class="brand">THE ESPRESSO EDIT.</a>
+    <a href="../index.html" class="continue-link">Continue shopping</a>
+  </header>
+
+  <main class="cart-page">
+
+    <section class="cart-heading">
+      <p class="eyebrow">YOUR SELECTION</p>
+      <h1>Your bag<span>.</span></h1>
+      <p class="heading-description">
+        A few good things for your coffee ritual.
+      </p>
+    </section>
+
+    <div class="cart-layout">
+
+      <section class="cart-products">
+        <div class="cart-section-heading">
+          <h2>Your items</h2>
+          <span id="cart-item-count">0 items</span>
+        </div>
+
+        <div id="cart-items-list" class="cart-items-list"></div>
+
+        <div id="empty-cart" class="empty-cart" hidden>
+          <p class="empty-title">Your bag is taking a little break.</p>
+          <p>Find something lovely for your next coffee ritual.</p>
+          <a href="../index.html" class="shop-link">Explore the collection</a>
+        </div>
+
+        <button id="clear-cart" class="clear-cart" type="button">
+          Clear bag
+        </button>
+      </section>
+
+      <aside class="order-summary">
+        <p class="eyebrow">THE DETAILS</p>
+        <h2>Order summary</h2>
+
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0.00</span>
+        </div>
+
+        <div class="summary-line">
+          <span>Shipping</span>
+          <span class="shipping-note">Calculated at checkout</span>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total">
+          <span>Total</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+
+        <p class="tax-note">Taxes and shipping calculated at checkout.</p>
+
+        <button id="checkout-button" class="checkout-button" type="button">
+          Continue to checkout
+        </button>
+
+        <p class="checkout-note">
+          A thoughtful cup starts with the right essentials.
+        </p>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="cart-footer">
+    <span>THE ESPRESSO EDIT.</span>
+    <span>Made for your everyday ritual.</span>
+  </footer>
+
+  <script src="cart.js"></script>
+
+  <script>
+    const STORAGE_KEY = "espresso-edit-cart";
+
+    const cartItemsList = document.getElementById("cart-items-list");
+    const emptyCart = document.getElementById("empty-cart");
+    const subtotalElement = document.getElementById("cart-subtotal");
+    const totalElement = document.getElementById("cart-total");
+    const itemCountElement = document.getElementById("cart-item-count");
+    const clearCartButton = document.getElementById("clear-cart");
+    const checkoutButton = document.getElementById("checkout-button");
+
+    function loadCart() {
+      try {
+        const savedItems = JSON.parse(
+          localStorage.getItem(STORAGE_KEY) || "[]"
+        );
+
+        return new Cart(Array.isArray(savedItems) ? savedItems : []);
+      } catch (error) {
+        return new Cart();
+      }
+    }
+
+    let cart = loadCart();
+
+    function saveCart() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart.getItems()));
+    }
+
+    function money(cents) {
+      return new Intl.NumberFormat("en-CA", {
+        style: "currency",
+        currency: "CAD"
+      }).format(cents / 100);
+    }
+
+    function renderCart() {
+      cartItemsList.innerHTML = "";
+
+      const items = cart.getItems();
+      const isEmpty = cart.isEmpty();
+
+      emptyCart.hidden = !isEmpty;
+      clearCartButton.hidden = isEmpty;
+      checkoutButton.disabled = isEmpty;
+
+      itemCountElement.textContent =
+        `${cart.getItemCount()} ${cart.getItemCount() === 1 ? "item" : "items"}`;
+
+      items.forEach(item => {
+        const row = document.createElement("article");
+        row.className = "cart-item";
+
+        const imageContainer = document.createElement("div");
+        imageContainer.className = "cart-item-image";
+
+        if (item.image) {
+          const image = document.createElement("img");
+          image.src = item.image;
+          image.alt = item.name;
+          image.loading = "lazy";
+          imageContainer.appendChild(image);
+        }
+
+        const details = document.createElement("div");
+        details.className = "item-details";
+
+        const category = document.createElement("p");
+        category.className = "item-category";
+        category.textContent = item.categoryLabel || "THE ESPRESSO EDIT";
+
+        const name = document.createElement("h3");
+        name.className = "item-name";
+        name.textContent = item.name;
+
+        const price = document.createElement("p");
+        price.className = "item-price";
+        price.textContent = money(item.priceCents);
+
+        details.append(category, name, price);
+
+        const controls = document.createElement("div");
+        controls.className = "item-controls";
+
+        const quantityLabel = document.createElement("label");
+        quantityLabel.className = "quantity-label";
+        quantityLabel.textContent = "QTY";
+
+        const quantityInput = document.createElement("input");
+        quantityInput.className = "quantity-input";
+        quantityInput.type = "number";
+        quantityInput.min = "1";
+        quantityInput.step = "1";
+        quantityInput.value = item.quantity;
+        quantityInput.setAttribute(
+          "aria-label",
+          `Quantity of ${item.name}`
+        );
+
+        quantityInput.addEventListener("change", () => {
+          const newQuantity = Number(quantityInput.value);
+
+          if (!Number.isInteger(newQuantity) || newQuantity < 1) {
+            quantityInput.value = item.quantity;
+            return;
+          }
+
+          cart.updateQuantity(item.id, newQuantity);
+          saveCart();
+          renderCart();
+        });
+
+        quantityLabel.appendChild(quantityInput);
+
+        const lineTotal = document.createElement("p");
+        lineTotal.className = "item-line-total";
+        lineTotal.textContent = money(item.priceCents * item.quantity);
+
+        const removeButton = document.createElement("button");
+        removeButton.className = "remove-item";
+        removeButton.type = "button";
+        removeButton.textContent = "REMOVE";
+
+        removeButton.addEventListener("click", () => {
+          cart.removeItem(item.id);
+          saveCart();
+          renderCart();
+        });
+
+        controls.append(quantityLabel, lineTotal, removeButton);
+        row.append(imageContainer, details, controls);
+        cartItemsList.appendChild(row);
+      });
+
+      subtotalElement.textContent = money(cart.getTotal());
+      totalElement.textContent = money(cart.getTotal());
+    }
+
+    clearCartButton.addEventListener("click", () => {
+      cart.clear();
+      saveCart();
+      renderCart();
+    });
+
+    checkoutButton.addEventListener("click", () => {
+      if (!cart.isEmpty()) {
+        alert("Checkout is a prototype feature and is not connected yet.");
+      }
+    });
+
+    renderCart();
+  </script>
+
+</body>
+</html>
