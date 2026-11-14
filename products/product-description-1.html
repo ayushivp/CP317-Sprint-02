@@ -9,5 +9,32 @@
         <h1>Espresso Machine #1 Description</h1>
         <p>This is a detailed description of the first espresso machine. The machine in the photos is not for sale; this is a prototype.</p>
         <p>Price: $249.99</p>
+
+        <!--button to add to cart with data attributes for product id and price in cents-->
+            <button class="add-to-cart" data-id="machine-1" data-price-cents="24999" type="button">
+                Add to Cart
+            </button>
+
+            <script src="cart.js"></script>
+    <script>
+        const CART_KEY = "espresso-edit-cart";
+
+        document.querySelectorAll(".add-to-cart").forEach(button => {
+            button.addEventListener("click", () => {
+                const product = button.closest(".product");
+                const cart = new Cart(JSON.parse(localStorage.getItem(CART_KEY)) || []);
+
+                cart.addItem({
+                    id: button.dataset.id,
+                    name: product.querySelector("h2").textContent,
+                    priceCents: Number(button.dataset.priceCents),
+                    image: product.querySelector("img").src
+                });
+
+                localStorage.setItem(CART_KEY, JSON.stringify(cart.getItems()));
+                alert("Added to cart: " + product.querySelector("h2").textContent);
+            });
+        });
+    </script>
     </body>
 </html>
