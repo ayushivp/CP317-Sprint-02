@@ -12,14 +12,42 @@
             <h2>Espresso Machine #1</h2>
             <a href="products/product-description-1.html">Description goes here.</a>
             <p>Price: $249.99</p>
+            <!--button to add to cart with data attributes for product id and price in cents-->
+            <button class="add-to-cart" data-id="machine-1" data-price-cents="24999" type="button">
+                Add to Cart
+            </button>
         </div>
         <div class="product">
             <img src="https://imgs.search.brave.com/vsxgWFY1vtiXKfue3pfNL_Wyn-sXzrdRgxyScNZjz60/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/c2VyaW91c2VhdHMu/Y29tL3RobWIvM3B2/RF9hWlUxZDVIUVBo/akVJQkU0dzdpeThJ/PS9maXQtaW4vMTUw/MHgyNjY4L2ZpbHRl/cnM6bm9fdXBzY2Fs/ZSgpOm1heF9ieXRl/cygxNTAwMDApOnN0/cmlwX2ljYygpOmZv/cm1hdCh3ZWJwKS9z/ZWEtcHJvZHVjdC1n/YWdnaWEtY2xhc3Np/Yy1wcm8tZXNwcmVz/c28tbWFjaGluZS1u/c2ltcHNvbi0zNDYw/LWFiMmVhYzE5NTQ5/ZTRjNjdhMDMzZTFk/MjAyNTdhZmQ5Lmpw/ZWc">
             <h2>Espresso Machine #2</h2>
             <a href="products/product-description-2.html">Description goes here.</a>
             <p>Price: $159.99</p>
+            <!--button to add to cart with data attributes for product id and price in cents-->
+            <button class="add-to-cart" data-id="machine-2" data-price-cents="15999" type="button">
+                Add to Cart
+            </button>
         </div>
+    <script src="cart.js"></script>
+    <script>
+        const CART_KEY = "espresso-edit-cart";
 
+        document.querySelectorAll(".add-to-cart").forEach(button => {
+            button.addEventListener("click", () => {
+                const product = button.closest(".product");
+                const cart = new Cart(JSON.parse(localStorage.getItem(CART_KEY)) || []);
+
+                cart.addItem({
+                    id: button.dataset.id,
+                    name: product.querySelector("h2").textContent,
+                    priceCents: Number(button.dataset.priceCents),
+                    image: product.querySelector("img").src
+                });
+
+                localStorage.setItem(CART_KEY, JSON.stringify(cart.getItems()));
+                alert("Added to cart: " + product.querySelector("h2").textContent);
+            });
+        });
+    </script>
     </body>
 
 </html>
