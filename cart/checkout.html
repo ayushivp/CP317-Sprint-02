@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | The Espresso Edit</title>
+  <link rel="stylesheet" href="cart.css">
+  <link rel="stylesheet" href="checkout.css">
+</head>
+
+<body>
+
+  <header class="cart-header">
+    <a href="../index.html" class="brand">THE ESPRESSO EDIT.</a>
+    <a href="cart.html" class="continue-link">Back to bag</a>
+  </header>
+
+  <main class="cart-page">
+
+    <!-- Checkout form + summary -->
+    <div id="checkout-view">
+      <section class="cart-heading">
+        <p class="eyebrow">ALMOST THERE</p>
+        <h1>Checkout<span>.</span></h1>
+        <p class="heading-description">
+          Prototype only: no payment is processed. Please don't enter real card details.
+        </p>
+      </section>
+
+      <div id="checkout-empty" class="empty-cart" hidden>
+        <p class="empty-title">Your bag is empty.</p>
+        <p>Add something to your bag before checking out.</p>
+        <a href="../index.html" class="shop-link">Explore the collection</a>
+      </div>
+
+      <div id="checkout-layout" class="cart-layout">
+        <form id="checkout-form" class="checkout-form" novalidate>
+
+          <fieldset>
+            <legend>Contact</legend>
+            <div class="field full">
+              <label for="fullName">Full name</label>
+              <input id="fullName" name="fullName" autocomplete="name">
+              <p class="field-error" data-for="fullName"></p>
+            </div>
+            <div class="field full">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email">
+              <p class="field-error" data-for="email"></p>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Shipping address</legend>
+            <div class="field full">
+              <label for="address">Street address</label>
+              <input id="address" name="address" autocomplete="street-address">
+              <p class="field-error" data-for="address"></p>
+            </div>
+            <div class="field">
+              <label for="city">City</label>
+              <input id="city" name="city" autocomplete="address-level2">
+              <p class="field-error" data-for="city"></p>
+            </div>
+            <div class="field">
+              <label for="province">Province</label>
+              <select id="province" name="province" autocomplete="address-level1">
+                <option value="">Choose…</option>
+              </select>
+              <p class="field-error" data-for="province"></p>
+            </div>
+            <div class="field">
+              <label for="postalCode">Postal code</label>
+              <input id="postalCode" name="postalCode" autocomplete="postal-code" placeholder="N2L 3C5">
+              <p class="field-error" data-for="postalCode"></p>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Payment (demo)</legend>
+            <div class="field full">
+              <label for="cardName">Name on card</label>
+              <input id="cardName" name="cardName" autocomplete="off">
+              <p class="field-error" data-for="cardName"></p>
+            </div>
+            <div class="field full">
+              <label for="cardNumber">Card number</label>
+              <input id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="off" placeholder="4242 4242 4242 4242">
+              <p class="field-error" data-for="cardNumber"></p>
+            </div>
+            <div class="field">
+              <label for="expiry">Expiry (MM/YY)</label>
+              <input id="expiry" name="expiry" inputmode="numeric" autocomplete="off" placeholder="08/28">
+              <p class="field-error" data-for="expiry"></p>
+            </div>
+            <div class="field">
+              <label for="cvv">CVV</label>
+              <input id="cvv" name="cvv" inputmode="numeric" autocomplete="off" placeholder="123">
+              <p class="field-error" data-for="cvv"></p>
+            </div>
+          </fieldset>
+        </form>
+
+        <aside class="order-summary">
+          <p class="eyebrow">THE DETAILS</p>
+          <h2>Order summary</h2>
+
+          <ul id="checkout-items" class="checkout-items"></ul>
+
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span id="checkout-subtotal">$0.00</span>
+          </div>
+          <div class="summary-line">
+            <span>HST (13%)</span>
+            <span id="checkout-tax">$0.00</span>
+          </div>
+          <div class="summary-line">
+            <span>Shipping</span>
+            <span id="checkout-shipping">Free</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span>Total</span>
+            <span id="checkout-total">$0.00</span>
+          </div>
+
+          <button id="place-order" class="checkout-button" type="submit" form="checkout-form">
+            PLACE ORDER
+          </button>
+          <p id="form-message" class="form-message" role="alert"></p>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Confirmation, shown after a successful order -->
+    <section id="confirmation-view" class="confirmation" hidden>
+      <p class="eyebrow">ORDER CONFIRMED</p>
+      <h1>Thank you<span>.</span></h1>
+      <p class="heading-description">
+        Your order number is <strong id="confirm-number"></strong>.
+        A confirmation would be sent to <strong id="confirm-email"></strong>.
+      </p>
+
+      <div class="order-summary confirm-summary">
+        <h2>Your order</h2>
+        <ul id="confirm-items" class="checkout-items"></ul>
+        <div class="summary-line"><span>Subtotal</span><span id="confirm-subtotal"></span></div>
+        <div class="summary-line"><span>HST (13%)</span><span id="confirm-tax"></span></div>
+        <div class="summary-line"><span>Shipping</span><span>Free</span></div>
+        <div class="summary-divider"></div>
+        <div class="summary-total"><span>Total paid</span><span id="confirm-total"></span></div>
+        <p class="tax-note" id="confirm-ship-to"></p>
+      </div>
+
+      <a href="../index.html" class="shop-link">Continue shopping</a>
+    </section>
+  </main>
+
+  <footer class="cart-footer">
+    <span>THE ESPRESSO EDIT.</span>
+    <span>Made for your everyday ritual.</span>
+  </footer>
+
+  <script src="cart.js"></script>
+  <script src="checkout.js"></script>
+
+  <script>
+    const STORAGE_KEY = "espresso-edit-cart";
+    const ORDER_KEY = "espresso-edit-last-order";
+
+    function money(cents) {
+      return new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" })
+        .format(cents / 100);
+    }
+
+    function loadCart() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return new Cart(Array.isArray(saved) ? saved : []);
+      } catch (e) {
+        return new Cart();
+      }
+    }
+
+    function renderItems(listElement, items) {
+      listElement.innerHTML = "";
+      items.forEach((item) => {
+        const li = document.createElement("li");
+        const name = document.createElement("span");
+        name.textContent = `${item.name} × ${item.quantity}`;
+        const total = document.createElement("span");
+        total.textContent = money(item.priceCents * item.quantity);
+        li.append(name, total);
+        listElement.appendChild(li);
+      });
+    }
+
+    const cart = loadCart();
+    const form = document.getElementById("checkout-form");
+    const provinceSelect = document.getElementById("province");
+
+    Checkout.PROVINCES.forEach((code) => {
+      const option = document.createElement("option");
+      option.value = code;
+      option.textContent = code;
+      provinceSelect.appendChild(option);
+    });
+    provinceSelect.value = "ON";
+
+    function renderSummary() {
+      const empty = cart.isEmpty();
+      document.getElementById("checkout-empty").hidden = !empty;
+      document.getElementById("checkout-layout").hidden = empty;
+      if (empty) return;
+
+      renderItems(document.getElementById("checkout-items"), cart.getItems());
+      const totals = Checkout.calculateOrderTotals(cart.getTotal());
+      document.getElementById("checkout-subtotal").textContent = money(totals.subtotalCents);
+      document.getElementById("checkout-tax").textContent = money(totals.taxCents);
+      document.getElementById("checkout-shipping").textContent =
+        totals.shippingCents === 0 ? "Free" : money(totals.shippingCents);
+      document.getElementById("checkout-total").textContent = money(totals.totalCents);
+    }
+
+    function showErrors(errors) {
+      document.querySelectorAll(".field-error").forEach((p) => {
+        const field = p.dataset.for;
+        p.textContent = errors[field] || "";
+        const input = document.getElementById(field);
+        input.toggleAttribute("aria-invalid", Boolean(errors[field]));
+      });
+    }
+
+    function showConfirmation(order) {
+      document.getElementById("checkout-view").hidden = true;
+      document.getElementById("confirmation-view").hidden = false;
+      document.getElementById("confirm-number").textContent = order.orderNumber;
+      document.getElementById("confirm-email").textContent = order.shipTo.email;
+      renderItems(document.getElementById("confirm-items"), order.items);
+      document.getElementById("confirm-subtotal").textContent = money(order.totals.subtotalCents);
+      document.getElementById("confirm-tax").textContent = money(order.totals.taxCents);
+      document.getElementById("confirm-total").textContent = money(order.totals.totalCents);
+      const s = order.shipTo;
+      document.getElementById("confirm-ship-to").textContent =
+        `Shipping to ${s.fullName}, ${s.address}, ${s.city}, ${s.province} ${s.postalCode}. ` +
+        `Paid with card ending in ${order.cardLast4} (demo).`;
+      window.scrollTo(0, 0);
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const message = document.getElementById("form-message");
+      const values = Object.fromEntries(new FormData(form).entries());
+      const errors = Checkout.validateCheckout(values);
+      showErrors(errors);
+
+      if (Object.keys(errors).length > 0) {
+        message.textContent = "Please fix the highlighted fields.";
+        const first = document.getElementById(Object.keys(errors)[0]);
+        if (first) first.focus();
+        return;
+      }
+
+      const order = Checkout.createOrder(cart.getItems(), values);
+      try {
+        localStorage.setItem(ORDER_KEY, JSON.stringify(order));
+        localStorage.setItem(STORAGE_KEY, "[]"); // empty the bag
+      } catch (e) { /* storage unavailable: still show the confirmation */ }
+      message.textContent = "";
+      showConfirmation(order);
+    });
+
+    renderSummary();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+/* Checkout page (CHK-1). Builds on cart.css: same colours, fonts and summary box. */
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 38px;
+}
+
+.checkout-form fieldset {
+  border: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 20px;
+}
+
+.checkout-form legend {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding-bottom: 19px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.field input,
+.field select {
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.field input[aria-invalid],
+.field select[aria-invalid] {
+  border-color: #a33a2b;
+}
+
+.field-error {
+  min-height: 0;
+  color: #a33a2b;
+  font-size: 11px;
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.checkout-items {
+  list-style: none;
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.checkout-items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 14px;
+  font-size: 12px;
+}
+
+.form-message {
+  margin-top: 14px;
+  color: #a33a2b;
+  font-size: 11px;
+  text-align: center;
+}
+
+.form-message:empty {
+  display: none;
+}
+
+#checkout-layout[hidden],
+#checkout-view[hidden],
+.confirmation[hidden] {
+  display: none;
+}
+
+.confirmation h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 6vw, 72px);
+  font-weight: 400;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+.confirmation h1 span {
+  color: var(--accent);
+}
+
+.confirm-summary {
+  max-width: 520px;
+  margin: 40px 0 30px;
+}
+
+@media (max-width: 540px) {
+  .checkout-form fieldset {
+    grid-template-columns: 1fr;
+  }
+}

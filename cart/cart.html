@@ -56,8 +56,13 @@
         </div>
 
         <div class="summary-line">
+          <span>HST (13%)</span>
+          <span id="cart-tax">$0.00</span>
+        </div>
+
+        <div class="summary-line">
           <span>Shipping</span>
-          <span class="shipping-note">Calculated at checkout</span>
+          <span class="shipping-note">Free</span>
         </div>
 
         <div class="summary-divider"></div>
@@ -67,7 +72,7 @@
           <span id="cart-total">$0.00</span>
         </div>
 
-        <p class="tax-note">Taxes and shipping calculated at checkout.</p>
+        <p class="tax-note">Total includes 13% Ontario HST.</p>
 
         <button id="checkout-button" class="checkout-button" type="button">
           Continue to checkout
@@ -87,6 +92,7 @@
   </footer>
 
   <script src="cart.js"></script>
+  <script src="checkout.js"></script>
 
   <script>
     const STORAGE_KEY = "espresso-edit-cart";
@@ -222,8 +228,10 @@
         cartItemsList.appendChild(row);
       });
 
-      subtotalElement.textContent = money(cart.getTotal());
-      totalElement.textContent = money(cart.getTotal());
+      const totals = Checkout.calculateOrderTotals(cart.getTotal());
+      subtotalElement.textContent = money(totals.subtotalCents);
+      document.getElementById("cart-tax").textContent = money(totals.taxCents);
+      totalElement.textContent = money(totals.totalCents);
     }
 
     clearCartButton.addEventListener("click", () => {
@@ -234,7 +242,7 @@
 
     checkoutButton.addEventListener("click", () => {
       if (!cart.isEmpty()) {
-        alert("Checkout is a prototype feature and is not connected yet.");
+        window.location.href = "checkout.html";
       }
     });
 
